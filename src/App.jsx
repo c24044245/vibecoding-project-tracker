@@ -1,3 +1,4 @@
+import Board from './components/Board';
 import Header from './components/Header';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { STORAGE_KEYS } from './lib/constants';
@@ -12,11 +13,15 @@ export default function App() {
     <div className="min-h-screen">
       <Header />
 
-      <main id="board" tabIndex={-1} className="focus:outline-none mx-auto max-w-screen-2xl px-4 py-6 sm:px-6">
-        <h1 className="text-2xl font-bold">Project board</h1>
-        <p className="text-ink-muted">
-          {tasks.length} tasks · {members.length} team members loaded
-        </p>
+      <main id="board" tabIndex={-1} className="mx-auto max-w-screen-2xl px-4 py-6 focus:outline-none sm:px-6">
+        <h1 className="mb-4 text-2xl font-bold">Project board</h1>
+
+        <Board
+          tasks={tasks}
+          renderTask={(task) => (
+            <div className="rounded-lg bg-surface-card p-3 shadow-sm">{task.title}</div>
+          )}
+        />
       </main>
     </div>
   );
