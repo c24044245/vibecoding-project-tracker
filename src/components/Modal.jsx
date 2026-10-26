@@ -20,7 +20,10 @@ export default function Modal({ open, onClose, title, children }) {
       dialog.showModal();
     } else if (!open && dialog.open) {
       dialog.close();
-      openerRef.current?.focus?.();
+      // Return focus to the opener; if it no longer exists (e.g. a deleted card), go to the board.
+      const opener = openerRef.current;
+      if (opener && document.body.contains(opener)) opener.focus();
+      else document.getElementById('board')?.focus();
     }
   }, [open]);
 

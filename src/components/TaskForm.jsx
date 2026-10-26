@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { STAGES, TASK_TYPES } from '../lib/constants';
 
 const inputClass =
   'mt-1 block w-full rounded-md border border-slate-400 bg-white px-3 py-2 text-base text-ink placeholder:text-slate-500';
 const labelClass = 'block font-bold';
 
-// The add / edit task form shown inside the modal (FR8, FR9, FR11).
-export default function TaskForm({ task, members, onSave, onCancel }) {
+// The add / edit task form shown inside the modal (FR8, FR9, FR10, FR11).
+export default function TaskForm({ task, members, onSave, onCancel, onDelete }) {
   const [values, setValues] = useState({
     title: task?.title ?? '',
     description: task?.description ?? '',
@@ -17,6 +17,13 @@ export default function TaskForm({ task, members, onSave, onCancel }) {
   });
   const [error, setError] = useState('');
   const titleRef = useRef(null);
+
+  // Deleting asks for confirmation first (FR10, NFR17).
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const keepButtonRef = useRef(null);
+  useEffect(() => {
+    if (confirmingDelete) keepButtonRef.current?.focus();
+  }, [confirmingDelete]);
 
   function update(field) {
     return (event) => setValues((v) => ({ ...v, [field]: event.target.value }));
@@ -138,18 +145,54 @@ export default function TaskForm({ task, members, onSave, onCancel }) {
         </div>
       </div>
 
-      <div className="mt-2 flex flex-wrap justify-end gap-3">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="min-h-[44px] rounded-md border border-slate-400 bg-white px-4 font-bold hover:bg-slate-100"
-        >
-          Cancel
-        </button>
-        <button type="submit" className="min-h-[44px] rounded-md bg-brand px-5 font-bold text-white hover:bg-brand-hover">
-          {task ? 'Save changes' : 'Add task'}
-        </button>
-      </div>
+      {confirmingDelete ? (
+        <div role="group" aria-labelledby="delete-confirm-text" className="mt-2 rounded-lg border-2 border-bug bg-bug-soft p-4">
+          <p id="delete-confirm-text" className="mb-3 font-bold">
+            Delete this task? This cannot be undone.
+          </p>
+          <div className="flex flex-wrap justify-end gap-3">
+            <button
+              ref={keepButtonRef}
+              type="button"
+              onClick={() => setConfirmingDelete(false)}
+              className="min-h-[44px] rounded-md border border-slate-400 bg-white px-4 font-bold hover:bg-slate-100"
+            >
+              Keep task
+            </button>
+            <button
+              type="button"
+              onClick={() => onDelete(task)}
+              className="min-h-[44px] rounded-md bg-bug px-5 font-bold text-white hover:bg-red-800"
+            >
+              Yes, delete task
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          {task && onDelete && (
+            <button
+              type="button"
+              onClick={() => setConfirmingDelete(true)}
+              className="min-h-[44px] rounded-md px-3 font-bold text-bug underline-offset-4 hover:underline"
+            >
+              Delete task
+            </button>
+          )}
+          <div className="ml-auto flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="min-h-[44px] rounded-md border border-slate-400 bg-white px-4 font-bold hover:bg-slate-100"
+            >
+              Cancel
+            </button>
+            <button type="submit" className="min-h-[44px] rounded-md bg-brand px-5 font-bold text-white hover:bg-brand-hover">
+              {task ? 'Save changes' : 'Add task'}
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

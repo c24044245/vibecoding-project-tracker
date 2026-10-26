@@ -32,6 +32,11 @@ export default function App() {
     closeModal();
   }
 
+  function handleDelete(task) {
+    setTasks((current) => current.filter((t) => t.id !== task.id));
+    closeModal();
+  }
+
   return (
     <div className="min-h-screen">
       <Header>
@@ -68,6 +73,7 @@ export default function App() {
           members={members}
           onSave={handleSave}
           onCancel={closeModal}
+          onDelete={handleDelete}
         />
       </Modal>
     </div>
