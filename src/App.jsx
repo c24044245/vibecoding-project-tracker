@@ -1,5 +1,6 @@
 import Board from './components/Board';
 import Header from './components/Header';
+import TaskCard from './components/TaskCard.jsx';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
@@ -19,7 +20,7 @@ export default function App() {
         <Board
           tasks={tasks}
           renderTask={(task) => (
-            <div className="rounded-lg bg-surface-card p-3 shadow-sm">{task.title}</div>
+            <TaskCard task={task} assignee={members.find((m) => m.id === task.assigneeId)} />
           )}
         />
       </main>
