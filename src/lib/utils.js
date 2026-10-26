@@ -33,7 +33,7 @@ export function formatShortDate(isoDate) {
   return new Date(y, m - 1, d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 }
 
-// "Priya Shah" -> "PS"
+// "Arthur Daley" -> "AD"
 export function getInitials(name = '') {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return '?';
