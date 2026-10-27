@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import Board from './components/Board';
+import Deliverables from './components/Deliverables';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import TaskCard from './components/TaskCard';
@@ -7,7 +8,7 @@ import TaskForm from './components/TaskForm';
 import Toast from './components/Toast';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useToast } from './hooks/useToast';
-import { STORAGE_KEYS } from './lib/constants';
+import { DELIVERABLES, STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
 import { createTask } from './lib/tasks';
 import { nowISO } from './lib/utils';
@@ -16,6 +17,7 @@ export default function App() {
   // Tasks and members are saved in the browser and loaded again on reload (FR12).
   const [tasks, setTasks] = useLocalStorage(STORAGE_KEYS.tasks, createSeedTasks);
   const [members] = useLocalStorage(STORAGE_KEYS.members, SEED_MEMBERS);
+  const [deliverables, setDeliverables] = useLocalStorage(STORAGE_KEYS.deliverables, DELIVERABLES);
 
   // Which modal is open: null (none), { mode: 'add' } or { mode: 'edit', taskId }.
   const [modal, setModal] = useState(null);
@@ -55,6 +57,12 @@ export default function App() {
     highlightTimer.current = setTimeout(() => setHighlightId(null), 2000);
   }
 
+  function handleDeliverableChange(id, changes) {
+    setDeliverables((current) => current.map((d) => (d.id === id ? { ...d, ...changes } : d)));
+    const label = deliverables.find((d) => d.id === id)?.label;
+    showToast(changes.url ? `${label} link saved` : `${label} link removed`);
+  }
+
   function handleDelete(task) {
     setTasks((current) => current.filter((t) => t.id !== task.id));
     closeModal();
@@ -75,7 +83,11 @@ export default function App() {
       </Header>
 
       <main id="board" tabIndex={-1} className="mx-auto max-w-screen-2xl px-4 py-6 focus:outline-none sm:px-6">
-        <h1 className="mb-4 text-2xl font-bold">Project board</h1>
+        <h1 className="sr-only">Vibe Tracker project</h1>
+
+        <Deliverables deliverables={deliverables} onChange={handleDeliverableChange} />
+
+        <h2 className="mb-3 text-xl font-bold">Task board</h2>
 
         <Board
           tasks={tasks}

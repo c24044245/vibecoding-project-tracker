@@ -58,3 +58,11 @@ export function CopyIcon(props) {
     </svg>
   );
 }
+
+export function LinkIcon(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6.5 9.5l3-3M7 4.5l1-1a2.8 2.8 0 014 4l-1 1M9 11.5l-1 1a2.8 2.8 0 01-4-4l1-1" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}

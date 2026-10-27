@@ -35,7 +35,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
         <TypeBadge type={task.type} />
       </p>
 
-      <h3 className="mb-3 font-bold leading-snug">
+      <h4 className="mb-3 font-bold leading-snug">
         {/* The title is the button; its ::after stretches over the whole card so the card is clickable. */}
         <button
           type="button"
@@ -44,7 +44,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
         >
           {task.title}
         </button>
-      </h3>
+      </h4>
 
       <div className="flex items-center justify-between gap-2 text-sm">
         <Assignee person={assignee} />
