@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import TypeBadge from './TypeBadge';
-import { STAGES, TASK_TYPES } from '../lib/constants';
+import { AI_TOOLS, CONTEXT_TEMPLATE, STAGES, TASK_TYPES } from '../lib/constants';
+import { nowISO, timeAgo } from '../lib/utils';
 
 const inputClass =
   'mt-1 block w-full rounded-md border border-slate-400 bg-white px-3 py-2 text-base text-ink placeholder:text-slate-500';
 const labelClass = 'block font-bold';
 
-// The add / edit task form shown inside the modal (FR8, FR9, FR10, FR11).
+// The add / edit task form shown inside the modal (FR8, FR9, FR10, FR11, FR17).
 export default function TaskForm({ task, members, onSave, onCancel, onDelete }) {
   const [values, setValues] = useState({
     title: task?.title ?? '',
@@ -15,6 +16,8 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
     status: task?.status ?? 'todo',
     assigneeId: task?.assigneeId ?? '',
     dueDate: task?.dueDate ?? '',
+    contextBody: task?.context?.body ?? CONTEXT_TEMPLATE,
+    contextTool: task?.context?.tool ?? '',
   });
   const [error, setError] = useState('');
   const titleRef = useRef(null);
@@ -40,12 +43,23 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
       return;
     }
 
+    // Stamp the context with the time only when it actually changed (FR17).
+    const oldContext = task?.context;
+    const contextChanged =
+      !oldContext || oldContext.body !== values.contextBody || (oldContext.tool ?? '') !== values.contextTool;
+
+    const { contextBody, contextTool, ...rest } = values;
     onSave({
-      ...values,
+      ...rest,
       title,
       description: values.description.trim(),
       assigneeId: values.assigneeId || null,
       dueDate: values.dueDate || null,
+      context: {
+        body: contextBody,
+        tool: contextTool || null,
+        updatedAt: contextChanged ? nowISO() : oldContext.updatedAt,
+      },
     });
   }
 
@@ -145,6 +159,57 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
           <input id="task-due" type="date" value={values.dueDate} onChange={update('dueDate')} className={inputClass} />
         </div>
       </div>
+
+      <fieldset className="rounded-lg border border-slate-300 p-4">
+        <legend className="px-1 text-lg font-bold">Context</legend>
+        <p id="context-help" className="mb-3 text-sm text-ink-muted">
+          A briefing for the next teammate or AI tool: what you were trying to do, what got in the way, and where to
+          pick up. Markdown works here.
+        </p>
+
+        <label htmlFor="task-context" className={labelClass}>
+          Context notes
+        </label>
+        <textarea
+          id="task-context"
+          rows={8}
+          value={values.contextBody}
+          onChange={update('contextBody')}
+          maxLength={10000}
+          aria-describedby="context-help context-updated"
+          className={`${inputClass} font-mono text-sm`}
+        />
+
+        <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <label htmlFor="task-context-tool" className={labelClass}>
+              AI tool used <span className="font-normal text-ink-muted">(optional)</span>
+            </label>
+            <select
+              id="task-context-tool"
+              value={values.contextTool}
+              onChange={update('contextTool')}
+              className={`${inputClass} w-auto`}
+            >
+              <option value="">Not set</option>
+              {AI_TOOLS.map((tool) => (
+                <option key={tool} value={tool}>
+                  {tool}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p id="context-updated" className="text-sm text-ink-muted">
+            {task?.context?.updatedAt ? (
+              <>
+                Last updated <time dateTime={task.context.updatedAt}>{timeAgo(task.context.updatedAt)}</time>
+              </>
+            ) : (
+              'Not updated yet'
+            )}
+          </p>
+        </div>
+      </fieldset>
 
       {confirmingDelete ? (
         <div role="group" aria-labelledby="delete-confirm-text" className="mt-2 rounded-lg border-2 border-bug bg-bug-soft p-4">
