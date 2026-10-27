@@ -12,7 +12,7 @@ import { useToast } from './hooks/useToast';
 import { DELIVERABLES, STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
 import { createTask } from './lib/tasks';
-import { createId, nowISO } from './lib/utils';
+import { createId, getInitials, nowISO } from './lib/utils';
 
 export default function App() {
   // Tasks and members are saved in the browser and loaded again on reload (FR12).
@@ -34,6 +34,12 @@ export default function App() {
     const member = { id: createId(), name, email, role, createdAt: nowISO() };
     setMembers((current) => [...current, member]);
     setSession({ currentUserId: member.id });
+  }
+
+  // Signing out keeps all board data; it just returns to the sign-in screen (FR2).
+  function handleSignOut() {
+    setSession({ currentUserId: null });
+    setModal(null);
   }
 
   // Which modal is open: null (none), { mode: 'add' } or { mode: 'edit', taskId }.
@@ -108,6 +114,26 @@ export default function App() {
           <span aria-hidden="true" className="text-xl leading-none">+</span>
           New task
         </button>
+
+        <div className="flex items-center gap-2 rounded-md border border-white/40 py-1 pl-1 pr-1">
+          <span
+            aria-hidden="true"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-bold text-brand"
+          >
+            {getInitials(currentUser.name)}
+          </span>
+          <span className="text-sm">
+            <span className="sr-only">Signed in as </span>
+            <span className="font-bold">{currentUser.name}</span>
+          </span>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="min-h-[36px] rounded-md px-3 text-sm font-bold underline-offset-4 hover:bg-white/10 hover:underline"
+          >
+            Sign out
+          </button>
+        </div>
       </Header>
 
       <main id="board" tabIndex={-1} className="mx-auto max-w-screen-2xl px-4 py-6 focus:outline-none sm:px-6">
