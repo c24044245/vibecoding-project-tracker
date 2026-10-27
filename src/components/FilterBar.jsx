@@ -15,15 +15,28 @@ export function applyFilters(tasks, filters) {
 const selectClass = 'mt-1 block min-h-[40px] rounded-md border border-slate-400 bg-white px-2 text-sm';
 
 // Filter controls above the board. Changes apply instantly and can be cleared in one click (FR21).
-export default function FilterBar({ filters, onChange, members, shown, total }) {
+export default function FilterBar({ filters, onChange, members, currentUserId, shown, total }) {
   const active = filters.assignee !== 'all' || filters.type !== 'all';
   const set = (field) => (event) => onChange({ ...filters, [field]: event.target.value });
+  const mine = filters.assignee === currentUserId;
 
   return (
     <div role="group" aria-labelledby="filter-heading" className="mb-4 flex flex-wrap items-end gap-3">
       <h3 id="filter-heading" className="sr-only">
         Filter tasks
       </h3>
+
+      {/* A toggle button: aria-pressed tells screen readers whether it is on or off. */}
+      <button
+        type="button"
+        aria-pressed={mine}
+        onClick={() => onChange({ ...filters, assignee: mine ? 'all' : currentUserId })}
+        className={`min-h-[40px] rounded-md border-2 px-4 text-sm font-bold ${
+          mine ? 'border-brand bg-brand text-white' : 'border-brand bg-white text-brand hover:bg-brand-soft'
+        }`}
+      >
+        My tasks
+      </button>
 
       <div>
         <label htmlFor="filter-assignee" className="block text-sm font-bold">

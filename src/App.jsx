@@ -180,6 +180,7 @@ export default function App() {
           filters={filters}
           onChange={setFilters}
           members={members}
+          currentUserId={currentUser.id}
           shown={visibleTasks.length}
           total={tasks.length}
         />
