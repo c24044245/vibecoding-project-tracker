@@ -3,6 +3,7 @@ import Board from './components/Board';
 import Deliverables from './components/Deliverables';
 import Header from './components/Header';
 import Modal from './components/Modal';
+import SignIn from './components/SignIn';
 import TaskCard from './components/TaskCard';
 import TaskForm from './components/TaskForm';
 import Toast from './components/Toast';
@@ -11,13 +12,29 @@ import { useToast } from './hooks/useToast';
 import { DELIVERABLES, STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
 import { createTask } from './lib/tasks';
-import { nowISO } from './lib/utils';
+import { createId, nowISO } from './lib/utils';
 
 export default function App() {
   // Tasks and members are saved in the browser and loaded again on reload (FR12).
   const [tasks, setTasks] = useLocalStorage(STORAGE_KEYS.tasks, createSeedTasks);
-  const [members] = useLocalStorage(STORAGE_KEYS.members, SEED_MEMBERS);
+  const [members, setMembers] = useLocalStorage(STORAGE_KEYS.members, SEED_MEMBERS);
   const [deliverables, setDeliverables] = useLocalStorage(STORAGE_KEYS.deliverables, DELIVERABLES);
+
+  // Who is signed in (FR1). Only the user's id is stored; their details live in `members`.
+  const [session, setSession] = useLocalStorage(STORAGE_KEYS.session, { currentUserId: null });
+  const currentUser = members.find((m) => m.id === session.currentUserId) ?? null;
+
+  // Signing in with an email that is already in the team reuses that member; otherwise it adds one.
+  function handleSignIn({ name, email, role }) {
+    const existing = members.find((m) => m.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      setSession({ currentUserId: existing.id });
+      return;
+    }
+    const member = { id: createId(), name, email, role, createdAt: nowISO() };
+    setMembers((current) => [...current, member]);
+    setSession({ currentUserId: member.id });
+  }
 
   // Which modal is open: null (none), { mode: 'add' } or { mode: 'edit', taskId }.
   const [modal, setModal] = useState(null);
@@ -35,7 +52,7 @@ export default function App() {
       );
       showToast('Changes saved');
     } else {
-      setTasks((current) => [...current, createTask(fields)]);
+      setTasks((current) => [...current, createTask({ ...fields, createdBy: currentUser.id })]);
       showToast(`Task "${fields.title}" added`);
     }
     closeModal();
@@ -67,6 +84,17 @@ export default function App() {
     setTasks((current) => current.filter((t) => t.id !== task.id));
     closeModal();
     showToast(`Task "${task.title}" deleted`);
+  }
+
+  if (!currentUser) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main id="board" tabIndex={-1} className="focus:outline-none">
+          <SignIn members={members} onSignIn={handleSignIn} />
+        </main>
+      </div>
+    );
   }
 
   return (

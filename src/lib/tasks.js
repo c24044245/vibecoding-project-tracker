@@ -14,6 +14,7 @@ export function createTask(fields = {}) {
     dueDate: null,
     createdAt: now,
     updatedAt: now,
+    createdBy: null, // id of the signed-in user who created it
     context: {
       body: CONTEXT_TEMPLATE,
       tool: null,
