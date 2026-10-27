@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import Board from './components/Board';
 import Deliverables from './components/Deliverables';
+import FilterBar, { NO_FILTERS, applyFilters } from './components/FilterBar';
 import Header from './components/Header';
 import Modal from './components/Modal';
 import SignIn from './components/SignIn';
@@ -49,6 +50,10 @@ export default function App() {
 
   // Confirmation messages, announced to screen readers too.
   const [toast, showToast] = useToast();
+
+  // Board filters (FR21). Kept in memory only, so every visit starts by showing everything.
+  const [filters, setFilters] = useState(NO_FILTERS);
+  const visibleTasks = applyFilters(tasks, filters);
 
   const editingTask = modal?.mode === 'edit' ? tasks.find((t) => t.id === modal.taskId) : null;
 
@@ -171,8 +176,16 @@ export default function App() {
 
         <h2 className="mb-3 text-xl font-bold">Task board</h2>
 
+        <FilterBar
+          filters={filters}
+          onChange={setFilters}
+          members={members}
+          shown={visibleTasks.length}
+          total={tasks.length}
+        />
+
         <Board
-          tasks={tasks}
+          tasks={visibleTasks}
           renderTask={(task) => (
             <TaskCard
               task={task}
