@@ -1,4 +1,4 @@
-// Shared constants. Use these everywhere instead of typing the strings again.
+
 
 // The four board columns, in display order (FR5).
 export const STAGES = [
@@ -27,8 +27,17 @@ export const CONTEXT_TEMPLATE = `## Background
 ## Pick up
 `;
 
+// The four final-project deliverables pinned above the board (FR19).
+export const DELIVERABLES = [
+  { id: 'presentation', label: 'Presentation', url: null, updatedAt: null },
+  { id: 'demo', label: 'Demo', url: null, updatedAt: null },
+  { id: 'report', label: 'Report', url: null, updatedAt: null },
+  { id: 'documentation', label: 'Documentation', url: null, updatedAt: null },
+];
+
 // localStorage keys (FR12).
 export const STORAGE_KEYS = {
   tasks: 'vibetracker.tasks',
   members: 'vibetracker.members',
+  deliverables: 'vibetracker.deliverables',
 };
