@@ -38,10 +38,21 @@ export const DELIVERABLES = [
   { id: 'documentation', label: 'Documentation', url: null, updatedAt: null },
 ];
 
+// Text size options for the display settings (FR22).
+export const TEXT_SIZES = [
+  { value: 100, label: 'Default' },
+  { value: 125, label: 'Large' },
+  { value: 150, label: 'Largest' },
+];
+
+// Default display settings (DR6).
+export const DEFAULT_SETTINGS = { textSize: 100 };
+
 // localStorage keys (FR12).
 export const STORAGE_KEYS = {
   tasks: 'vibetracker.tasks',
   members: 'vibetracker.members',
   deliverables: 'vibetracker.deliverables',
   session: 'vibetracker.session',
+  settings: 'vibetracker.settings',
 };

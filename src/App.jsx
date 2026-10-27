@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Board from './components/Board';
 import Deliverables from './components/Deliverables';
 import FilterBar, { NO_FILTERS, applyFilters } from './components/FilterBar';
 import Header from './components/Header';
 import Modal from './components/Modal';
+import SettingsPanel from './components/SettingsPanel';
 import SignIn from './components/SignIn';
 import TaskCard from './components/TaskCard';
 import TeamPanel from './components/TeamPanel';
@@ -11,7 +12,7 @@ import TaskForm from './components/TaskForm';
 import Toast from './components/Toast';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useToast } from './hooks/useToast';
-import { DELIVERABLES, STORAGE_KEYS } from './lib/constants';
+import { DEFAULT_SETTINGS, DELIVERABLES, STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
 import { createTask } from './lib/tasks';
 import { createId, getInitials, nowISO } from './lib/utils';
@@ -21,6 +22,12 @@ export default function App() {
   const [tasks, setTasks] = useLocalStorage(STORAGE_KEYS.tasks, createSeedTasks);
   const [members, setMembers] = useLocalStorage(STORAGE_KEYS.members, SEED_MEMBERS);
   const [deliverables, setDeliverables] = useLocalStorage(STORAGE_KEYS.deliverables, DELIVERABLES);
+
+  // Display settings (FR22): text size scales the root font size, which every rem-based size follows.
+  const [settings, setSettings] = useLocalStorage(STORAGE_KEYS.settings, DEFAULT_SETTINGS);
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${settings.textSize}%`;
+  }, [settings.textSize]);
 
   // Who is signed in (FR1). Only the user's id is stored; their details live in `members`.
   const [session, setSession] = useLocalStorage(STORAGE_KEYS.session, { currentUserId: null });
@@ -44,7 +51,7 @@ export default function App() {
     setModal(null);
   }
 
-  // Which modal is open: null (none), { mode: 'add' }, { mode: 'edit', taskId } or { mode: 'team' }.
+  // Which modal is open: null (none), { mode: 'add' }, { mode: 'edit', taskId }, { mode: 'team' } or { mode: 'settings' }.
   const [modal, setModal] = useState(null);
   const closeModal = () => setModal(null);
 
@@ -148,6 +155,14 @@ export default function App() {
           </span>
         </button>
 
+        <button
+          type="button"
+          onClick={() => setModal({ mode: 'settings' })}
+          className="flex min-h-[44px] items-center gap-2 rounded-md border border-white/60 px-4 font-bold hover:bg-white/10"
+        >
+          Settings
+        </button>
+
         <div className="flex items-center gap-2 rounded-md border border-white/40 py-1 pl-1 pr-1">
           <span
             aria-hidden="true"
@@ -203,9 +218,19 @@ export default function App() {
       <Modal
         open={modal !== null}
         onClose={closeModal}
-        title={modal?.mode === 'team' ? 'Team members' : editingTask ? 'Edit task' : 'New task'}
+        title={
+          modal?.mode === 'team'
+            ? 'Team members'
+            : modal?.mode === 'settings'
+              ? 'Settings'
+              : editingTask
+                ? 'Edit task'
+                : 'New task'
+        }
       >
-        {modal?.mode === 'team' ? (
+        {modal?.mode === 'settings' ? (
+          <SettingsPanel settings={settings} onChange={setSettings} />
+        ) : modal?.mode === 'team' ? (
           <TeamPanel
             members={members}
             currentUserId={currentUser.id}
