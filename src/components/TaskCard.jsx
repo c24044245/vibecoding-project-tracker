@@ -45,7 +45,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
       }}
       className={`relative cursor-grab rounded-lg border p-3 shadow-sm transition-shadow hover:shadow-md active:cursor-grabbing ${
         CARD_TINT[due.state]
-      } ${highlighted ? 'ring-4 ring-brand/40' : ''} ${dragging ? 'opacity-50' : ''}`}
+      } ${highlighted ? 'ring-4 ring-brand-ring' : ''} ${dragging ? 'opacity-50' : ''}`}
     >
       <p className="mb-2">
         <TypeBadge type={task.type} />

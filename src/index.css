@@ -2,19 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme colours (light). Every text colour has at least 4.5:1 contrast on its background (NFR1). */
+:root {
+  --brand: #3730a3;          /* indigo-800 */
+  --brand-hover: #312e81;    /* indigo-900 */
+  --brand-soft: #eef2ff;     /* indigo-50 */
+  --brand-ink: #3730a3;
+  --brand-ring: #a5b4fc;     /* indigo-300 */
+
+  --surface-page: #f1f5f9;   /* slate-100 */
+  --surface-column: #e2e8f0; /* slate-200 */
+  --surface-card: #ffffff;
+  --surface-muted: #f8fafc;  /* slate-50 */
+  --surface-hover: #f1f5f9;
+
+  --ink: #0f172a;            /* slate-900 */
+  --ink-muted: #475569;      /* slate-600 */
+
+  --line: #cbd5e1;           /* slate-300 */
+  --line-soft: #e2e8f0;      /* slate-200 */
+  --line-strong: #64748b;    /* slate-500 */
+
+  --feature: #047857;        /* emerald-700 */
+  --feature-soft: #ecfdf5;
+  --bug: #b91c1c;            /* red-700 */
+  --bug-soft: #fef2f2;
+  --danger: #b91c1c;
+  --danger-hover: #991b1b;
+
+  --toast: #0f172a;
+  --toast-ink: #ffffff;
+
+  --due-calm: #0f766e;       /* teal-700 */
+  --due-warning: #92400e;    /* amber-800 */
+  --due-warning-soft: #fffbeb;
+  --due-warning-line: #d97706;
+  --due-overdue: #b91c1c;
+  --due-overdue-soft: #fef2f2;
+
+  --focus: #3730a3;
+}
+
 html, body, #root {
   min-height: 100%;
 }
 
 body {
-   @apply bg-surface-page font-sans text-ink antialiased;
+  @apply bg-surface-page font-sans text-ink antialiased;
   font-size: 1rem;    /* 16px minimum body text */
   line-height: 1.5;   /* WCAG 1.4.12 text spacing */
 }
 
 /* A clear, consistent focus ring for keyboard users on every interactive element. */
 :focus-visible {
-  outline: 3px solid #3730A3;
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
 }

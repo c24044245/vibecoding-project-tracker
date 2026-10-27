@@ -3,38 +3,56 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
-      // Every colour below has at least 4.5:1 contrast on white (WCAG 2.2 AA).
+      // Colours come from CSS variables in src/index.css, so one set of class names
+      // works for both the light and dark themes. Contrast is checked for both (NFR1).
       colors: {
         brand: {
-          DEFAULT: '#3730A3', // indigo-800: header, primary buttons, focus ring
-          hover: '#312E81',   // indigo-900
-          soft: '#EEF2FF',    // indigo-50: light backgrounds
+          DEFAULT: 'var(--brand)',     // header, primary buttons
+          hover: 'var(--brand-hover)',
+          soft: 'var(--brand-soft)',   // light backgrounds, selected states
+          ink: 'var(--brand-ink)',     // brand-coloured text and outlines
+          ring: 'var(--brand-ring)',   // highlight rings
         },
         surface: {
-          page: '#F1F5F9',    // slate-100
-          column: '#E2E8F0',  // slate-200
-          card: '#FFFFFF',
+          page: 'var(--surface-page)',
+          column: 'var(--surface-column)',
+          card: 'var(--surface-card)',
+          muted: 'var(--surface-muted)', // Done cards
+          hover: 'var(--surface-hover)',
         },
         ink: {
-          DEFAULT: '#0F172A', // slate-900: body text
-          muted: '#475569',   // slate-600: captions, dates, counts
+          DEFAULT: 'var(--ink)',       // body text
+          muted: 'var(--ink-muted)',   // captions, dates, counts
+        },
+        line: {
+          DEFAULT: 'var(--line)',      // card borders
+          soft: 'var(--line-soft)',    // dividers
+          strong: 'var(--line-strong)', // form field borders (3:1, WCAG 1.4.11)
         },
         feature: {
-          DEFAULT: '#047857', // emerald-700
-          soft: '#ECFDF5',
+          DEFAULT: 'var(--feature)',
+          soft: 'var(--feature-soft)',
         },
         bug: {
-          DEFAULT: '#B91C1C', // red-700
-          soft: '#FEF2F2',
+          DEFAULT: 'var(--bug)',
+          soft: 'var(--bug-soft)',
+        },
+        danger: {
+          DEFAULT: 'var(--danger)',    // delete / remove buttons
+          hover: 'var(--danger-hover)',
+        },
+        toast: {
+          DEFAULT: 'var(--toast)',
+          ink: 'var(--toast-ink)',
         },
         // Due-date states (FR16): text colour, soft card tint and border for each.
         due: {
-          calm: '#0F766E',        // teal-700
-          warning: '#92400E',     // amber-800
-          'warning-soft': '#FFFBEB',
-          'warning-line': '#D97706',
-          overdue: '#B91C1C',     // red-700
-          'overdue-soft': '#FEF2F2',
+          calm: 'var(--due-calm)',
+          warning: 'var(--due-warning)',
+          'warning-soft': 'var(--due-warning-soft)',
+          'warning-line': 'var(--due-warning-line)',
+          overdue: 'var(--due-overdue)',
+          'overdue-soft': 'var(--due-overdue-soft)',
         },
       },
       fontFamily: {

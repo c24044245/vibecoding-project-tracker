@@ -24,7 +24,7 @@ export default function Column({ stage, tasks, renderTask, onDropTask }) {
         if (taskId) onDropTask(taskId, stage.id);
       }}
       className={`flex min-h-[12rem] flex-col rounded-xl p-3 transition-colors ${
-        isOver ? 'bg-brand-soft ring-4 ring-brand/50' : 'bg-surface-column'
+        isOver ? 'bg-brand-soft ring-4 ring-brand-ring' : 'bg-surface-column'
       }`}
     >
       <h3 id={headingId} className="mb-3 flex items-center justify-between px-1 text-base font-bold">
