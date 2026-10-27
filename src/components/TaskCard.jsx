@@ -1,14 +1,14 @@
-import { TASK_TYPES } from '../lib/constants';
+import TypeBadge from './TypeBadge';
 import { formatShortDate, getInitials } from '../lib/utils';
 
 // A single task on the board: type, title, assignee and due date are all visible at a glance (FR7).
 // Clicking anywhere on the card (or pressing Enter on its title) opens it for editing (FR9).
 export default function TaskCard({ task, assignee, onOpen }) {
-  const type = TASK_TYPES[task.type] ?? TASK_TYPES.feature;
-
   return (
     <article className="relative rounded-lg border border-slate-300 bg-surface-card p-3 shadow-sm hover:border-brand hover:shadow-md">
-      <p className="mb-1 text-xs font-bold uppercase tracking-wide text-ink-muted">{type.label}</p>
+      <p className="mb-2">
+        <TypeBadge type={task.type} />
+      </p>
 
       <h3 className="mb-3 font-bold leading-snug">
         {/* The title is the button; its ::after stretches over the whole card so the card is clickable. */}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import TypeBadge from './TypeBadge';
 import { STAGES, TASK_TYPES } from '../lib/constants';
 
 const inputClass =
@@ -103,7 +104,7 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
                 onChange={update('type')}
                 className="h-4 w-4 accent-brand"
               />
-              {type.label}
+              <TypeBadge type={type.id} />
             </label>
           ))}
         </div>
