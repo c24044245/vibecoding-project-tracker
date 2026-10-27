@@ -4,7 +4,9 @@ import Header from './components/Header';
 import Modal from './components/Modal';
 import TaskCard from './components/TaskCard';
 import TaskForm from './components/TaskForm';
+import Toast from './components/Toast';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { useToast } from './hooks/useToast';
 import { STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
 import { createTask } from './lib/tasks';
@@ -19,6 +21,9 @@ export default function App() {
   const [modal, setModal] = useState(null);
   const closeModal = () => setModal(null);
 
+  // Confirmation messages, announced to screen readers too.
+  const [toast, showToast] = useToast();
+
   const editingTask = modal?.mode === 'edit' ? tasks.find((t) => t.id === modal.taskId) : null;
 
   function handleSave(fields) {
@@ -26,8 +31,10 @@ export default function App() {
       setTasks((current) =>
         current.map((t) => (t.id === editingTask.id ? { ...t, ...fields, updatedAt: nowISO() } : t)),
       );
+      showToast('Changes saved');
     } else {
       setTasks((current) => [...current, createTask(fields)]);
+      showToast(`Task "${fields.title}" added`);
     }
     closeModal();
   }
@@ -35,6 +42,7 @@ export default function App() {
   function handleDelete(task) {
     setTasks((current) => current.filter((t) => t.id !== task.id));
     closeModal();
+    showToast(`Task "${task.title}" deleted`);
   }
 
   return (
@@ -76,6 +84,8 @@ export default function App() {
           onDelete={handleDelete}
         />
       </Modal>
+
+      <Toast toast={toast} />
     </div>
   );
 }
