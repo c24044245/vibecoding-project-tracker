@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Modal from './components/Modal';
 import SignIn from './components/SignIn';
 import TaskCard from './components/TaskCard';
+import TeamPanel from './components/TeamPanel';
 import TaskForm from './components/TaskForm';
 import Toast from './components/Toast';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -42,7 +43,7 @@ export default function App() {
     setModal(null);
   }
 
-  // Which modal is open: null (none), { mode: 'add' } or { mode: 'edit', taskId }.
+  // Which modal is open: null (none), { mode: 'add' }, { mode: 'edit', taskId } or { mode: 'team' }.
   const [modal, setModal] = useState(null);
   const closeModal = () => setModal(null);
 
@@ -86,6 +87,11 @@ export default function App() {
     showToast(changes.url ? `${label} link saved` : `${label} link removed`);
   }
 
+  // Team members (FR3).
+  function handleAddMember(values) {
+    setMembers((current) => [...current, { id: createId(), ...values, createdAt: nowISO() }]);
+  }
+
   function handleDelete(task) {
     setTasks((current) => current.filter((t) => t.id !== task.id));
     closeModal();
@@ -113,6 +119,18 @@ export default function App() {
         >
           <span aria-hidden="true" className="text-xl leading-none">+</span>
           New task
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setModal({ mode: 'team' })}
+          className="flex min-h-[44px] items-center gap-2 rounded-md border border-white/60 px-4 font-bold hover:bg-white/10"
+        >
+          Team
+          <span className="rounded-full bg-white px-2 text-sm text-brand">
+            {members.length}
+            <span className="sr-only"> members</span>
+          </span>
         </button>
 
         <div className="flex items-center gap-2 rounded-md border border-white/40 py-1 pl-1 pr-1">
@@ -158,16 +176,24 @@ export default function App() {
         />
       </main>
 
-      <Modal open={modal !== null} onClose={closeModal} title={editingTask ? 'Edit task' : 'New task'}>
-        {/* key resets the form whenever a different task is opened */}
-        <TaskForm
-          key={editingTask?.id ?? 'new'}
-          task={editingTask}
-          members={members}
-          onSave={handleSave}
-          onCancel={closeModal}
-          onDelete={handleDelete}
-        />
+      <Modal
+        open={modal !== null}
+        onClose={closeModal}
+        title={modal?.mode === 'team' ? 'Team members' : editingTask ? 'Edit task' : 'New task'}
+      >
+        {modal?.mode === 'team' ? (
+          <TeamPanel members={members} currentUserId={currentUser.id} onAdd={handleAddMember} />
+        ) : (
+          /* key resets the form whenever a different task is opened */
+          <TaskForm
+            key={editingTask?.id ?? 'new'}
+            task={editingTask}
+            members={members}
+            onSave={handleSave}
+            onCancel={closeModal}
+            onDelete={handleDelete}
+          />
+        )}
       </Modal>
 
       <Toast toast={toast} />
