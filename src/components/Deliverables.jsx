@@ -20,7 +20,7 @@ export default function Deliverables({ deliverables, onChange }) {
         </p>
       </div>
 
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,15rem),1fr))] gap-3">
         {deliverables.map((item) => (
           <li key={item.id}>
             <DeliverableCard
@@ -67,7 +67,7 @@ function DeliverableCard({ item, onSave }) {
         item.url ? 'border-feature bg-white' : 'border-dashed border-slate-400 bg-white'
       }`}
     >
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
         <h3 className="font-bold">{item.label}</h3>
         {item.url ? (
           <span className="inline-flex items-center gap-1 text-sm font-bold text-feature">

@@ -57,7 +57,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
         </button>
       </h4>
 
-      <div className="flex items-center justify-between gap-2 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-sm">
         <Assignee person={assignee} />
         <DueLabel due={due} date={task.dueDate} />
       </div>

@@ -1,10 +1,11 @@
 import Column from './Column';
 import { STAGES } from '../lib/constants';
 
-// The Kanban board: four columns side by side on wide screens, stacked on narrow ones (FR5, NFR8).
+// The Kanban board (FR5). Columns are at least 17rem wide, so they sit side by side on wide screens
+// and wrap onto new rows when the screen is narrow or the text size is enlarged (NFR8, FR22).
 export default function Board({ tasks, renderTask, onDropTask }) {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,17rem),1fr))] gap-4">
       {STAGES.map((stage) => (
         <Column
           key={stage.id}
