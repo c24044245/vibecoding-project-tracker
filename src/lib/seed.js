@@ -1,5 +1,5 @@
 import { createTask } from './tasks';
-import { dateFromToday } from './utils';
+import { dateFromToday, nowISO } from './utils';
 
 // Example team so the board is not empty on first visit (FR6).
 // Fixed IDs so the example tasks can point at these members.
@@ -29,6 +29,21 @@ export function createSeedTasks() {
       status: 'in-progress',
       assigneeId: sam.id,
       dueDate: dateFromToday(0),
+      context: {
+        body: `## Background
+Nav is a flex row with the logo and five links.
+
+## Constraints
+Tailwind only, no extra libraries. Must work by keyboard.
+
+## Tried so far
+flex-wrap: links wrap but push the logo off-centre.
+
+## Pick up
+Try a menu button that shows the links below 640px.`,
+        tool: 'Claude',
+        updatedAt: nowISO(),
+      },
     }),
     createTask({
       title: 'About page layout',

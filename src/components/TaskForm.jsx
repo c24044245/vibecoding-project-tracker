@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import CopyContextButton from './CopyContextButton';
 import TypeBadge from './TypeBadge';
 import { AI_TOOLS, CONTEXT_TEMPLATE, STAGES, TASK_TYPES } from '../lib/constants';
 import { nowISO, timeAgo } from '../lib/utils';
@@ -199,6 +200,19 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
               ))}
             </select>
           </div>
+          <CopyContextButton
+            task={{
+              title: values.title.trim() || 'Untitled task',
+              description: values.description,
+              type: values.type,
+              status: values.status,
+              dueDate: values.dueDate || null,
+              context: { body: values.contextBody, tool: values.contextTool || null, updatedAt: task?.context?.updatedAt },
+            }}
+            assignee={members.find((m) => m.id === values.assigneeId)}
+          />
+        </div>
+        <div className="mt-2 flex justify-end">
           <p id="context-updated" className="text-sm text-ink-muted">
             {task?.context?.updatedAt ? (
               <>

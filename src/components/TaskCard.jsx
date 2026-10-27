@@ -1,3 +1,4 @@
+import CopyContextButton from './CopyContextButton';
 import { AlertIcon, CheckIcon, ClockIcon } from './Icons';
 import TypeBadge from './TypeBadge';
 import { getDueState } from '../lib/due';
@@ -50,24 +51,29 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
         <DueLabel due={due} date={task.dueDate} />
       </div>
 
-      {/* relative z-10 lifts the dropdown above the card's clickable overlay */}
-      <div className="relative z-10 mt-3 flex items-center gap-2 border-t border-slate-200 pt-3 text-sm">
-        <label htmlFor={`handoff-${task.id}`} className="font-bold text-ink-muted">
-          Hand off to<span className="sr-only"> (task: {task.title})</span>
-        </label>
-        <select
-          id={`handoff-${task.id}`}
-          value={task.assigneeId ?? ''}
-          onChange={(event) => onHandOff(task, event.target.value || null)}
-          className="min-h-[36px] min-w-0 flex-1 rounded-md border border-slate-400 bg-white px-2 text-sm"
-        >
-          <option value="">Unassigned</option>
-          {members.map((member) => (
-            <option key={member.id} value={member.id}>
-              {member.name}
-            </option>
-          ))}
-        </select>
+      {/* relative z-10 lifts these controls above the card's clickable overlay */}
+      <div className="relative z-10 mt-3 flex flex-col gap-2 border-t border-slate-200 pt-3 text-sm">
+        <div className="flex items-center gap-2">
+          <label htmlFor={`handoff-${task.id}`} className="font-bold text-ink-muted">
+            Hand off to<span className="sr-only"> (task: {task.title})</span>
+          </label>
+          <select
+            id={`handoff-${task.id}`}
+            value={task.assigneeId ?? ''}
+            onChange={(event) => onHandOff(task, event.target.value || null)}
+            className="min-h-[36px] min-w-0 flex-1 rounded-md border border-slate-400 bg-white px-2 text-sm"
+          >
+            <option value="">Unassigned</option>
+            {members.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <CopyContextButton task={task} assignee={assignee} compact />
+        </div>
       </div>
     </article>
   );
