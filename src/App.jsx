@@ -157,7 +157,7 @@ export default function App() {
         <button
           type="button"
           onClick={() => setModal({ mode: 'add' })}
-          className="flex min-h-[44px] items-center gap-2 rounded-md bg-white px-4 font-bold text-brand hover:bg-brand-soft"
+          className="flex min-h-[44px] items-center gap-2 rounded-md bg-surface-card px-4 font-bold text-brand-ink hover:bg-brand-soft"
         >
           <span aria-hidden="true" className="text-xl leading-none">+</span>
           New task
@@ -169,7 +169,7 @@ export default function App() {
           className="flex min-h-[44px] items-center gap-2 rounded-md border border-white/60 px-4 font-bold hover:bg-white/10"
         >
           Team
-          <span className="rounded-full bg-white px-2 text-sm text-brand">
+          <span className="rounded-full bg-surface-card px-2 text-sm text-brand-ink">
             {members.length}
             <span className="sr-only"> members</span>
           </span>
@@ -186,7 +186,7 @@ export default function App() {
         <div className="flex items-center gap-2 rounded-md border border-white/40 py-1 pl-1 pr-1">
           <span
             aria-hidden="true"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-sm font-bold text-brand"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-card text-sm font-bold text-brand-ink"
           >
             {getInitials(currentUser.name)}
           </span>

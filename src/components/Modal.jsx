@@ -41,7 +41,7 @@ export default function Modal({ open, onClose, title, children }) {
         onClose();
       }}
       onClick={handleClick}
-      className="m-auto w-[calc(100%-2rem)] max-w-xl rounded-xl p-0 text-ink shadow-2xl backdrop:bg-slate-900/60"
+      className="m-auto w-[calc(100%-2rem)] max-w-xl rounded-xl bg-surface-card p-0 text-ink shadow-2xl backdrop:bg-slate-900/60"
     >
       {open && (
         <div className="p-5 sm:p-6">
@@ -53,7 +53,7 @@ export default function Modal({ open, onClose, title, children }) {
               type="button"
               onClick={onClose}
               aria-label="Close"
-              className="-m-1 flex h-11 w-11 items-center justify-center rounded-md text-2xl leading-none text-ink-muted hover:bg-slate-100 hover:text-ink"
+              className="-m-1 flex h-11 w-11 items-center justify-center rounded-md text-2xl leading-none text-ink-muted hover:bg-surface-hover hover:text-ink"
             >
               <span aria-hidden="true">×</span>
             </button>

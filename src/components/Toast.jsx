@@ -13,7 +13,7 @@ export default function Toast({ toast }) {
       {toast && (
         <p
           key={toast.id}
-          className="pointer-events-auto flex items-center gap-2 rounded-lg bg-ink px-4 py-3 font-bold text-white shadow-lg"
+          className="pointer-events-auto flex items-center gap-2 rounded-lg bg-toast px-4 py-3 font-bold text-toast-ink shadow-lg"
         >
           <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
             <circle cx="10" cy="10" r="9" fill="#34D399" />

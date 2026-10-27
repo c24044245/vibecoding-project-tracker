@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ROLES } from '../lib/constants';
 import { getInitials } from '../lib/utils';
 
-const inputClass = 'mt-1 block w-full rounded-md border bg-white px-3 py-2 text-base text-ink';
+const inputClass = 'mt-1 block w-full rounded-md border bg-surface-card px-3 py-2 text-base text-ink';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
@@ -33,7 +33,7 @@ export default function SignIn({ members, onSignIn }) {
 
   return (
     <div className="mx-auto w-full max-w-md px-4 py-10">
-      <div className="rounded-2xl bg-white p-6 shadow-sm sm:p-8">
+      <div className="rounded-2xl bg-surface-card p-6 shadow-sm sm:p-8">
         <h1 className="mb-2 text-2xl font-bold">Sign in to Vibe Tracker</h1>
         <p className="mb-6 text-ink-muted">Track your vibe coding tasks and the prompts behind them.</p>
 
@@ -48,7 +48,7 @@ export default function SignIn({ members, onSignIn }) {
               maxLength={60}
               aria-invalid={errors.name ? 'true' : undefined}
               aria-describedby={errors.name ? 'signin-name-error' : undefined}
-              className={`${inputClass} ${errors.name ? 'border-bug ring-1 ring-bug' : 'border-slate-400'}`}
+              className={`${inputClass} ${errors.name ? 'border-bug ring-1 ring-bug' : 'border-line-strong'}`}
             />
           </Field>
 
@@ -61,12 +61,12 @@ export default function SignIn({ members, onSignIn }) {
               onChange={update('email')}
               aria-invalid={errors.email ? 'true' : undefined}
               aria-describedby={errors.email ? 'signin-email-error' : undefined}
-              className={`${inputClass} ${errors.email ? 'border-bug ring-1 ring-bug' : 'border-slate-400'}`}
+              className={`${inputClass} ${errors.email ? 'border-bug ring-1 ring-bug' : 'border-line-strong'}`}
             />
           </Field>
 
           <Field id="signin-role" label="Your role" hint="(optional)">
-            <select id="signin-role" value={values.role} onChange={update('role')} className={`${inputClass} border-slate-400`}>
+            <select id="signin-role" value={values.role} onChange={update('role')} className={`${inputClass} border-line-strong`}>
               <option value="">Choose a role</option>
               {ROLES.map((role) => (
                 <option key={role} value={role}>
@@ -86,7 +86,7 @@ export default function SignIn({ members, onSignIn }) {
         </p>
 
         {members.length > 0 && (
-          <div className="mt-6 border-t border-slate-200 pt-5">
+          <div className="mt-6 border-t border-line-soft pt-5">
             <h2 className="mb-3 font-bold">Or continue as an example teammate</h2>
             <ul className="flex flex-col gap-2">
               {members.slice(0, 3).map((member) => (
@@ -94,7 +94,7 @@ export default function SignIn({ members, onSignIn }) {
                   <button
                     type="button"
                     onClick={() => onSignIn(member)}
-                    className="flex min-h-[48px] w-full items-center gap-3 rounded-md border border-slate-300 px-3 text-left hover:border-brand hover:bg-brand-soft"
+                    className="flex min-h-[48px] w-full items-center gap-3 rounded-md border border-line px-3 text-left hover:border-brand-ink hover:bg-brand-soft"
                   >
                     <span aria-hidden="true" className="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-xs font-bold text-white">
                       {getInitials(member.name)}

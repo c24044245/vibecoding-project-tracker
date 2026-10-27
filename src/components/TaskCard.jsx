@@ -10,9 +10,9 @@ import { formatShortDate, getInitials } from '../lib/utils';
 const CARD_TINT = {
   overdue: 'bg-due-overdue-soft border-due-overdue border-2',
   warning: 'bg-due-warning-soft border-due-warning-line border-2',
-  done: 'bg-slate-50 border-slate-300',
-  calm: 'bg-surface-card border-slate-300',
-  none: 'bg-surface-card border-slate-300',
+  done: 'bg-surface-muted border-line',
+  calm: 'bg-surface-card border-line',
+  none: 'bg-surface-card border-line',
 };
 const DUE_LABEL = {
   overdue: { Icon: AlertIcon, className: 'text-due-overdue font-bold' },
@@ -62,7 +62,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
         <DueLabel due={due} date={task.dueDate} />
       </div>
 
-      <div className="mt-3 flex flex-col gap-2 border-t border-slate-200 pt-3 text-sm">
+      <div className="mt-3 flex flex-col gap-2 border-t border-line-soft pt-3 text-sm">
         <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-2">
           <label htmlFor={`handoff-${task.id}`} className="font-bold text-ink-muted">
             Hand off to<span className="sr-only"> (task: {task.title})</span>
@@ -71,7 +71,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
             id={`handoff-${task.id}`}
             value={task.assigneeId ?? ''}
             onChange={(event) => onHandOff(task, event.target.value || null)}
-            className="min-h-[36px] min-w-0 rounded-md border border-slate-400 bg-white px-2 text-sm"
+            className="min-h-[36px] min-w-0 rounded-md border border-line-strong bg-surface-card px-2 text-sm"
           >
             <option value="">Unassigned</option>
             {members.map((member) => (
@@ -88,7 +88,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
             id={`move-${task.id}`}
             value={task.status}
             onChange={(event) => onMove(task, event.target.value)}
-            className="min-h-[36px] min-w-0 rounded-md border border-slate-400 bg-white px-2 text-sm"
+            className="min-h-[36px] min-w-0 rounded-md border border-line-strong bg-surface-card px-2 text-sm"
           >
             {STAGES.map((stage) => (
               <option key={stage.id} value={stage.id}>

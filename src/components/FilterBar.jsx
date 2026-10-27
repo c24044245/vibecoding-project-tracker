@@ -12,7 +12,7 @@ export function applyFilters(tasks, filters) {
   });
 }
 
-const selectClass = 'mt-1 block min-h-[40px] rounded-md border border-slate-400 bg-white px-2 text-sm';
+const selectClass = 'mt-1 block min-h-[40px] rounded-md border border-line-strong bg-surface-card px-2 text-sm';
 
 // Filter controls above the board. Changes apply instantly and can be cleared in one click (FR21).
 export default function FilterBar({ filters, onChange, members, currentUserId, shown, total }) {
@@ -32,7 +32,7 @@ export default function FilterBar({ filters, onChange, members, currentUserId, s
         aria-pressed={mine}
         onClick={() => onChange({ ...filters, assignee: mine ? 'all' : currentUserId })}
         className={`min-h-[40px] rounded-md border-2 px-4 text-sm font-bold ${
-          mine ? 'border-brand bg-brand text-white' : 'border-brand bg-white text-brand hover:bg-brand-soft'
+          mine ? 'border-brand-ink bg-brand text-white' : 'border-brand-ink bg-surface-card text-brand-ink hover:bg-brand-soft'
         }`}
       >
         My tasks
@@ -71,7 +71,7 @@ export default function FilterBar({ filters, onChange, members, currentUserId, s
         <button
           type="button"
           onClick={() => onChange(NO_FILTERS)}
-          className="min-h-[40px] rounded-md px-3 text-sm font-bold text-brand underline underline-offset-2 hover:bg-brand-soft"
+          className="min-h-[40px] rounded-md px-3 text-sm font-bold text-brand-ink underline underline-offset-2 hover:bg-brand-soft"
         >
           Clear filters
         </button>

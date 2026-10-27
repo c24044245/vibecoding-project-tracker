@@ -5,7 +5,7 @@ import { AI_TOOLS, CONTEXT_TEMPLATE, STAGES, TASK_TYPES } from '../lib/constants
 import { nowISO, timeAgo } from '../lib/utils';
 
 const inputClass =
-  'mt-1 block w-full rounded-md border border-slate-400 bg-white px-3 py-2 text-base text-ink placeholder:text-slate-500';
+  'mt-1 block w-full rounded-md border border-line-strong bg-surface-card px-3 py-2 text-base text-ink placeholder:text-ink-muted';
 const labelClass = 'block font-bold';
 
 // The add / edit task form shown inside the modal (FR8, FR9, FR10, FR11, FR17).
@@ -109,7 +109,7 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
           {Object.values(TASK_TYPES).map((type) => (
             <label
               key={type.id}
-              className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md border border-slate-400 px-4 has-[:checked]:border-brand has-[:checked]:bg-brand-soft"
+              className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md border border-line-strong px-4 has-[:checked]:border-brand-ink has-[:checked]:bg-brand-soft"
             >
               <input
                 type="radio"
@@ -161,7 +161,7 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
         </div>
       </div>
 
-      <fieldset className="rounded-lg border border-slate-300 p-4">
+      <fieldset className="rounded-lg border border-line p-4">
         <legend className="px-1 text-lg font-bold">Context</legend>
         <p id="context-help" className="mb-3 text-sm text-ink-muted">
           A briefing for the next teammate or AI tool: what you were trying to do, what got in the way, and where to
@@ -235,14 +235,14 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
               ref={keepButtonRef}
               type="button"
               onClick={() => setConfirmingDelete(false)}
-              className="min-h-[44px] rounded-md border border-slate-400 bg-white px-4 font-bold hover:bg-slate-100"
+              className="min-h-[44px] rounded-md border border-line-strong bg-surface-card px-4 font-bold hover:bg-surface-hover"
             >
               Keep task
             </button>
             <button
               type="button"
               onClick={() => onDelete(task)}
-              className="min-h-[44px] rounded-md bg-bug px-5 font-bold text-white hover:bg-red-800"
+              className="min-h-[44px] rounded-md bg-danger px-5 font-bold text-white hover:bg-danger-hover"
             >
               Yes, delete task
             </button>
@@ -263,7 +263,7 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
             <button
               type="button"
               onClick={onCancel}
-              className="min-h-[44px] rounded-md border border-slate-400 bg-white px-4 font-bold hover:bg-slate-100"
+              className="min-h-[44px] rounded-md border border-line-strong bg-surface-card px-4 font-bold hover:bg-surface-hover"
             >
               Cancel
             </button>

@@ -64,7 +64,7 @@ function DeliverableCard({ item, onSave }) {
   return (
     <div
       className={`flex h-full flex-col gap-2 rounded-xl border-2 p-3 ${
-        item.url ? 'border-feature bg-white' : 'border-dashed border-slate-400 bg-white'
+        item.url ? 'border-feature bg-surface-card' : 'border-dashed border-line-strong bg-surface-card'
       }`}
     >
       <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
@@ -75,7 +75,7 @@ function DeliverableCard({ item, onSave }) {
           </span>
         ) : (
           <span className="inline-flex items-center gap-1 text-sm text-ink-muted">
-            <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full border-2 border-slate-500" /> Not added yet
+            <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full border-2 border-line-strong" /> Not added yet
           </span>
         )}
       </div>
@@ -96,7 +96,7 @@ function DeliverableCard({ item, onSave }) {
               aria-invalid={error ? 'true' : undefined}
               aria-describedby={error ? errorId : undefined}
               className={`min-h-[40px] min-w-0 flex-1 rounded-md border px-2 text-sm ${
-                error ? 'border-bug ring-1 ring-bug' : 'border-slate-400'
+                error ? 'border-bug ring-1 ring-bug' : 'border-line-strong'
               }`}
             />
             <button type="submit" className="min-h-[40px] rounded-md bg-brand px-3 text-sm font-bold text-white hover:bg-brand-hover">
@@ -115,7 +115,7 @@ function DeliverableCard({ item, onSave }) {
             href={item.url}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex min-w-0 items-center gap-1 font-bold text-brand underline underline-offset-2"
+            className="inline-flex min-w-0 items-center gap-1 font-bold text-brand-ink underline underline-offset-2"
           >
             <LinkIcon />
             <span className="truncate">Open {item.label.toLowerCase()}</span>

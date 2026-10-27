@@ -1,11 +1,12 @@
 // Top bar: skip link, logo (top left, links home) and page actions (NFR13, NFR14).
+// Focus rings are white here so they show up against the brand-coloured background (NFR3).
 export default function Header({ children }) {
   return (
-    <header className="bg-brand text-white">
+    <header className="bg-brand text-white [&_*:focus-visible]:outline-white">
       {/* Hidden until focused with Tab, then lets keyboard users jump past the header. */}
       <a
         href="#board"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:font-bold focus:text-brand"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface-card focus:px-4 focus:py-2 focus:font-bold focus:text-brand-ink"
       >
         Skip to board
       </a>

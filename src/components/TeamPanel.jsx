@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ROLES } from '../lib/constants';
 import { getInitials } from '../lib/utils';
 
-const inputClass = 'mt-1 block w-full rounded-md border bg-white px-3 py-2 text-base text-ink';
+const inputClass = 'mt-1 block w-full rounded-md border bg-surface-card px-3 py-2 text-base text-ink';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // Lists the team and lets anyone add (FR3), edit or remove (FR4) a member. Shown inside the modal.
@@ -15,7 +15,7 @@ export default function TeamPanel({ members, currentUserId, onAdd, onUpdate, onR
         <h3 id="team-list-heading" className="mb-2 font-bold">
           {members.length} {members.length === 1 ? 'member' : 'members'}
         </h3>
-        <ul className="divide-y divide-slate-200 rounded-lg border border-slate-300">
+        <ul className="divide-y divide-line-soft rounded-lg border border-line">
           {members.map((member) => (
             <li key={member.id} className="p-3">
               <MemberRow
@@ -83,7 +83,7 @@ function MemberRow({ member, members, isYou, onUpdate, onRemove }) {
         <MemberSummary member={member} isYou={isYou} />
         {mode === 'view' && (
           <div className="flex gap-1">
-            <button type="button" onClick={() => setMode('edit')} className={`${smallButton} text-brand hover:bg-brand-soft`}>
+            <button type="button" onClick={() => setMode('edit')} className={`${smallButton} text-brand-ink hover:bg-brand-soft`}>
               Edit<span className="sr-only"> {member.name}</span>
             </button>
             {!isYou && (
@@ -102,10 +102,10 @@ function MemberRow({ member, members, isYou, onUpdate, onRemove }) {
           </p>
           <div className="flex flex-wrap justify-end gap-2">
             {/* autoFocus moves keyboard focus to the safe choice first */}
-            <button type="button" autoFocus onClick={() => setMode('view')} className={`${smallButton} border border-slate-400 bg-white`}>
+            <button type="button" autoFocus onClick={() => setMode('view')} className={`${smallButton} border border-line-strong bg-surface-card`}>
               Keep
             </button>
-            <button type="button" onClick={onRemove} className={`${smallButton} bg-bug text-white hover:bg-red-800`}>
+            <button type="button" onClick={onRemove} className={`${smallButton} bg-danger text-white hover:bg-danger-hover`}>
               Yes, remove
             </button>
           </div>
@@ -184,7 +184,7 @@ export function MemberForm({ heading, submitLabel, members, initial, excludeId, 
       onChange={update(key)}
       aria-invalid={errors[key] ? 'true' : undefined}
       aria-describedby={errors[key] ? `${idPrefix}-${key}-error` : undefined}
-      className={`${inputClass} ${errors[key] ? 'border-bug ring-1 ring-bug' : 'border-slate-400'}`}
+      className={`${inputClass} ${errors[key] ? 'border-bug ring-1 ring-bug' : 'border-line-strong'}`}
     />
   );
 
@@ -198,7 +198,7 @@ export function MemberForm({ heading, submitLabel, members, initial, excludeId, 
       {field(
         'role',
         'Role',
-        <select id={`${idPrefix}-role`} value={values.role} onChange={update('role')} className={`${inputClass} border-slate-400`}>
+        <select id={`${idPrefix}-role`} value={values.role} onChange={update('role')} className={`${inputClass} border-line-strong`}>
           {ROLES.map((role) => (
             <option key={role} value={role}>
               {role}
@@ -208,7 +208,7 @@ export function MemberForm({ heading, submitLabel, members, initial, excludeId, 
       )}
       <div className="flex flex-wrap justify-end gap-3">
         {onCancel && (
-          <button type="button" onClick={onCancel} className="min-h-[44px] rounded-md border border-slate-400 bg-white px-4 font-bold hover:bg-slate-100">
+          <button type="button" onClick={onCancel} className="min-h-[44px] rounded-md border border-line-strong bg-surface-card px-4 font-bold hover:bg-surface-hover">
             Cancel
           </button>
         )}

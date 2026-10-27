@@ -25,7 +25,7 @@ export default function CopyContextButton({ task, assignee, compact = false }) {
       <button
         type="button"
         onClick={handleCopy}
-        className={`inline-flex items-center gap-1.5 rounded-md border border-brand bg-white font-bold text-brand hover:bg-brand-soft ${
+        className={`inline-flex items-center gap-1.5 rounded-md border border-brand-ink bg-surface-card font-bold text-brand-ink hover:bg-brand-soft ${
           compact ? 'min-h-[36px] px-2.5 text-sm' : 'min-h-[44px] px-4'
         }`}
       >
