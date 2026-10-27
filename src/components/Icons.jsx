@@ -22,3 +22,30 @@ export function BugIcon(props) {
     </svg>
   );
 }
+
+export function ClockIcon(props) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      <path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function AlertIcon(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M8 1.5L15 14H1z" fill="currentColor" />
+      <path d="M8 6v3.5" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round" />
+      <circle cx="8" cy="11.6" r="0.9" fill="#FFFFFF" />
+    </svg>
+  );
+}
+
+export function CheckIcon(props) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

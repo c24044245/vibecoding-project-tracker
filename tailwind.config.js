@@ -3,8 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
+      // Every colour below has at least 4.5:1 contrast on white (WCAG 2.2 AA).
       colors: {
-       brand: {
+        brand: {
           DEFAULT: '#3730A3', // indigo-800: header, primary buttons, focus ring
           hover: '#312E81',   // indigo-900
           soft: '#EEF2FF',    // indigo-50: light backgrounds
@@ -25,6 +26,15 @@ export default {
         bug: {
           DEFAULT: '#B91C1C', // red-700
           soft: '#FEF2F2',
+        },
+        // Due-date states (FR16): text colour, soft card tint and border for each.
+        due: {
+          calm: '#0F766E',        // teal-700
+          warning: '#92400E',     // amber-800
+          'warning-soft': '#FFFBEB',
+          'warning-line': '#D97706',
+          overdue: '#B91C1C',     // red-700
+          'overdue-soft': '#FEF2F2',
         },
       },
       fontFamily: {

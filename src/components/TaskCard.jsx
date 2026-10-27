@@ -1,11 +1,30 @@
+import { AlertIcon, CheckIcon, ClockIcon } from './Icons';
 import TypeBadge from './TypeBadge';
+import { getDueState } from '../lib/due';
 import { formatShortDate, getInitials } from '../lib/utils';
+
+// Card tint and due-label style for each due state (FR16).
+const CARD_TINT = {
+  overdue: 'bg-due-overdue-soft border-due-overdue border-2',
+  warning: 'bg-due-warning-soft border-due-warning-line border-2',
+  done: 'bg-slate-50 border-slate-300',
+  calm: 'bg-surface-card border-slate-300',
+  none: 'bg-surface-card border-slate-300',
+};
+const DUE_LABEL = {
+  overdue: { Icon: AlertIcon, className: 'text-due-overdue font-bold' },
+  warning: { Icon: ClockIcon, className: 'text-due-warning font-bold' },
+  calm: { Icon: ClockIcon, className: 'text-due-calm' },
+  done: { Icon: CheckIcon, className: 'text-ink-muted' },
+};
 
 // A single task on the board: type, title, assignee and due date are all visible at a glance (FR7).
 // Clicking anywhere on the card (or pressing Enter on its title) opens it for editing (FR9).
 export default function TaskCard({ task, assignee, onOpen }) {
+  const due = getDueState(task);
+
   return (
-    <article className="relative rounded-lg border border-slate-300 bg-surface-card p-3 shadow-sm hover:border-brand hover:shadow-md">
+    <article className={`relative rounded-lg border p-3 shadow-sm hover:shadow-md ${CARD_TINT[due.state]}`}>
       <p className="mb-2">
         <TypeBadge type={task.type} />
       </p>
@@ -23,13 +42,27 @@ export default function TaskCard({ task, assignee, onOpen }) {
 
       <div className="flex items-center justify-between gap-2 text-sm">
         <Assignee person={assignee} />
-        {task.dueDate && (
-          <p className="text-ink-muted">
-            Due <time dateTime={task.dueDate}>{formatShortDate(task.dueDate)}</time>
-          </p>
-        )}
+        <DueLabel due={due} date={task.dueDate} />
       </div>
     </article>
+  );
+}
+
+function DueLabel({ due, date }) {
+  if (due.state === 'none') return null;
+  const { Icon, className } = DUE_LABEL[due.state];
+  return (
+    <p className={`flex items-center gap-1 ${className}`}>
+      <Icon />
+      <span>
+        {due.label}
+        {due.state !== 'done' && (
+          <span className="sr-only">
+            , <time dateTime={date}>{formatShortDate(date)}</time>
+          </span>
+        )}
+      </span>
+    </p>
   );
 }
 
