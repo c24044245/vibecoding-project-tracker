@@ -29,6 +29,20 @@ export default function App() {
     document.documentElement.style.fontSize = `${settings.textSize}%`;
   }, [settings.textSize]);
 
+  // Theme (FR22): adds the "dark" class to <html> when dark is chosen, or when "Match my device"
+  // is chosen and the device is in dark mode. Updates live if the device setting changes.
+  useEffect(() => {
+    const theme = settings.theme ?? 'system';
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const apply = () => {
+      const dark = theme === 'dark' || (theme === 'system' && media.matches);
+      document.documentElement.classList.toggle('dark', dark);
+    };
+    apply();
+    media.addEventListener('change', apply);
+    return () => media.removeEventListener('change', apply);
+  }, [settings.theme]);
+
   // Who is signed in (FR1). Only the user's id is stored; their details live in `members`.
   const [session, setSession] = useLocalStorage(STORAGE_KEYS.session, { currentUserId: null });
   const currentUser = members.find((m) => m.id === session.currentUserId) ?? null;

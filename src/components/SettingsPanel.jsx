@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { buildBackup, downloadFile, parseBackup } from '../lib/backup';
-import { TEXT_SIZES } from '../lib/constants';
+import { TEXT_SIZES, THEMES } from '../lib/constants';
 
 /**
  * Display settings (FR22). Text size scales the whole app, because every size in the
@@ -31,6 +31,29 @@ export default function SettingsPanel({ settings, onChange, board, onImport }) {
                 Aa
               </span>
               <span className="text-sm">{size.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend className="mb-1 font-bold">Theme</legend>
+        <p className="mb-3 text-sm text-ink-muted">Dark can be easier on the eyes in low light.</p>
+        <div className="flex flex-col gap-2">
+          {THEMES.map((theme) => (
+            <label
+              key={theme.value}
+              className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg border-2 border-line px-3 has-[:checked]:border-brand-ink has-[:checked]:bg-brand-soft"
+            >
+              <input
+                type="radio"
+                name="theme"
+                value={theme.value}
+                checked={(settings.theme ?? 'system') === theme.value}
+                onChange={() => onChange({ ...settings, theme: theme.value })}
+                className="h-4 w-4 accent-brand"
+              />
+              {theme.label}
             </label>
           ))}
         </div>

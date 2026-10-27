@@ -43,6 +43,50 @@
   --focus: #3730a3;
 }
 
+/* Dark theme: the same names with dark values. Turned on by the "dark" class on <html> (FR22).
+   Contrast is checked again here: text stays at 4.5:1 or more on its background (NFR1). */
+:root.dark {
+  color-scheme: dark; /* dark scrollbars, date pickers and dropdowns */
+
+  --brand: #4f46e5;          /* indigo-600: white text on it is 6.3:1 */
+  --brand-hover: #4338ca;
+  --brand-soft: #1e1b4b;
+  --brand-ink: #a5b4fc;      /* indigo-300 */
+  --brand-ring: #6366f1;
+
+  --surface-page: #0b1120;
+  --surface-column: #172033;
+  --surface-card: #1e293b;   /* slate-800 */
+  --surface-muted: #1a2436;
+  --surface-hover: #334155;
+
+  --ink: #f1f5f9;            /* slate-100 */
+  --ink-muted: #cbd5e1;      /* slate-300 */
+
+  --line: #475569;
+  --line-soft: #334155;
+  --line-strong: #94a3b8;
+
+  --feature: #6ee7b7;        /* emerald-300 */
+  --feature-soft: #064e3b;
+  --bug: #fca5a5;            /* red-300 */
+  --bug-soft: #450a0a;
+  --danger: #dc2626;         /* red-600: white text on it is 4.8:1 */
+  --danger-hover: #b91c1c;
+
+  --toast: #f1f5f9;
+  --toast-ink: #0f172a;
+
+  --due-calm: #5eead4;       /* teal-300 */
+  --due-warning: #fcd34d;    /* amber-300 */
+  --due-warning-soft: #3b2405;
+  --due-warning-line: #f59e0b;
+  --due-overdue: #fca5a5;
+  --due-overdue-soft: #3f1010;
+
+  --focus: #a5b4fc;
+}
+
 html, body, #root {
   min-height: 100%;
 }

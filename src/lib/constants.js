@@ -45,8 +45,15 @@ export const TEXT_SIZES = [
   { value: 150, label: 'Largest' },
 ];
 
+// Theme options (FR22). "System" follows the device's light or dark setting.
+export const THEMES = [
+  { value: 'system', label: 'Match my device' },
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+];
+
 // Default display settings (DR6).
-export const DEFAULT_SETTINGS = { textSize: 100 };
+export const DEFAULT_SETTINGS = { textSize: 100, theme: 'system' };
 
 // localStorage keys (FR12).
 export const STORAGE_KEYS = {
