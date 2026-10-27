@@ -209,7 +209,10 @@ export default function App() {
 
         <Deliverables deliverables={deliverables} onChange={handleDeliverableChange} />
 
-        <h2 className="mb-3 text-xl font-bold">Task board</h2>
+        <h2 className="text-xl font-bold">Task board</h2>
+        <p className="mb-3 text-sm text-ink-muted">
+          Drag cards between columns, or use <strong>Move to</strong> on any card.
+        </p>
 
         <FilterBar
           filters={filters}
@@ -222,6 +225,10 @@ export default function App() {
 
         <Board
           tasks={visibleTasks}
+          onDropTask={(taskId, status) => {
+            const task = tasks.find((t) => t.id === taskId);
+            if (task) handleMove(task, status);
+          }}
           renderTask={(task) => (
             <TaskCard
               task={task}

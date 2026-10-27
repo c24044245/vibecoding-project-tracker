@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import CopyContextButton from './CopyContextButton';
 import { AlertIcon, CheckIcon, ClockIcon } from './Icons';
 import TypeBadge from './TypeBadge';
@@ -21,29 +22,37 @@ const DUE_LABEL = {
 };
 
 // A single task on the board: type, title, assignee and due date are all visible at a glance (FR7).
-// Clicking anywhere on the card (or pressing Enter on its title) opens it for editing (FR9).
+// Clicking the card (or pressing Enter on its title button) opens it for editing (FR9).
 // The "Hand off to" dropdown reassigns the task without opening it (FR14).
 // The "Move to" dropdown changes column by keyboard or touch, the alternative to dragging (FR24, NFR9).
 export default function TaskCard({ task, assignee, members, highlighted, onOpen, onHandOff, onMove }) {
   const due = getDueState(task);
+  const [dragging, setDragging] = useState(false);
 
   return (
     <article
-      className={`relative rounded-lg border p-3 shadow-sm transition-shadow hover:shadow-md ${CARD_TINT[due.state]} ${
-        highlighted ? 'ring-4 ring-brand/40' : ''
-      }`}
+      draggable
+      onDragStart={(event) => {
+        event.dataTransfer.setData('text/plain', task.id);
+        event.dataTransfer.effectAllowed = 'move';
+        setDragging(true);
+      }}
+      onDragEnd={() => setDragging(false)}
+      // Mouse convenience: a click anywhere on the card opens it, except on its own controls.
+      // Keyboard and screen-reader users use the title button, which does the same thing.
+      onClick={(event) => {
+        if (!event.target.closest('button, select, a, input, label')) onOpen(task);
+      }}
+      className={`relative cursor-grab rounded-lg border p-3 shadow-sm transition-shadow hover:shadow-md active:cursor-grabbing ${
+        CARD_TINT[due.state]
+      } ${highlighted ? 'ring-4 ring-brand/40' : ''} ${dragging ? 'opacity-50' : ''}`}
     >
       <p className="mb-2">
         <TypeBadge type={task.type} />
       </p>
 
       <h4 className="mb-3 font-bold leading-snug">
-        {/* The title is the button; its ::after stretches over the whole card so the card is clickable. */}
-        <button
-          type="button"
-          onClick={() => onOpen(task)}
-          className="text-left after:absolute after:inset-0 after:rounded-lg after:content-['']"
-        >
+        <button type="button" onClick={() => onOpen(task)} className="text-left hover:underline">
           {task.title}
         </button>
       </h4>
@@ -53,8 +62,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
         <DueLabel due={due} date={task.dueDate} />
       </div>
 
-      {/* relative z-10 lifts these controls above the card's clickable overlay */}
-      <div className="relative z-10 mt-3 flex flex-col gap-2 border-t border-slate-200 pt-3 text-sm">
+      <div className="mt-3 flex flex-col gap-2 border-t border-slate-200 pt-3 text-sm">
         <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-2">
           <label htmlFor={`handoff-${task.id}`} className="font-bold text-ink-muted">
             Hand off to<span className="sr-only"> (task: {task.title})</span>

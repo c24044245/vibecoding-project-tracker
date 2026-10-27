@@ -1,11 +1,31 @@
+import { useState } from 'react';
+
 // One board column: a heading with its task count, then the list of tasks (FR5).
-export default function Column({ stage, tasks, renderTask }) {
+// It is also a drop zone: drag a card here to move it into this column (FR24).
+export default function Column({ stage, tasks, renderTask, onDropTask }) {
   const headingId = `column-${stage.id}`;
+  const [isOver, setIsOver] = useState(false);
 
   return (
     <section
       aria-labelledby={headingId}
-      className="flex min-h-[12rem] flex-col rounded-xl bg-surface-column p-3"
+      onDragOver={(event) => {
+        event.preventDefault(); // allows dropping here
+        event.dataTransfer.dropEffect = 'move';
+        setIsOver(true);
+      }}
+      onDragLeave={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsOver(false);
+      }}
+      onDrop={(event) => {
+        event.preventDefault();
+        setIsOver(false);
+        const taskId = event.dataTransfer.getData('text/plain');
+        if (taskId) onDropTask(taskId, stage.id);
+      }}
+      className={`flex min-h-[12rem] flex-col rounded-xl p-3 transition-colors ${
+        isOver ? 'bg-brand-soft ring-4 ring-brand/50' : 'bg-surface-column'
+      }`}
     >
       <h3 id={headingId} className="mb-3 flex items-center justify-between px-1 text-base font-bold">
         {stage.label}
