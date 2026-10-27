@@ -12,7 +12,7 @@ import TaskForm from './components/TaskForm';
 import Toast from './components/Toast';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useToast } from './hooks/useToast';
-import { DEFAULT_SETTINGS, DELIVERABLES, STORAGE_KEYS } from './lib/constants';
+import { DEFAULT_SETTINGS, DELIVERABLES, STAGES, STORAGE_KEYS } from './lib/constants';
 import { SEED_MEMBERS, createSeedTasks } from './lib/seed';
 import { createTask } from './lib/tasks';
 import { createId, getInitials, nowISO } from './lib/utils';
@@ -93,6 +93,16 @@ export default function App() {
     highlightTimer.current = setTimeout(() => setHighlightId(null), 2000);
   }
 
+  // Move a task to another column, from the card's Move to dropdown or by dragging (FR24).
+  function handleMove(task, status) {
+    if (task.status === status) return;
+    setTasks((current) => current.map((t) => (t.id === task.id ? { ...t, status, updatedAt: nowISO() } : t)));
+    showToast(`"${task.title}" moved to ${STAGES.find((s) => s.id === status)?.label}`);
+    setHighlightId(task.id);
+    clearTimeout(highlightTimer.current);
+    highlightTimer.current = setTimeout(() => setHighlightId(null), 2000);
+  }
+
   function handleDeliverableChange(id, changes) {
     setDeliverables((current) => current.map((d) => (d.id === id ? { ...d, ...changes } : d)));
     const label = deliverables.find((d) => d.id === id)?.label;
@@ -112,6 +122,16 @@ export default function App() {
   function handleRemoveMember(member) {
     setMembers((current) => current.filter((m) => m.id !== member.id));
     setTasks((current) => current.map((t) => (t.assigneeId === member.id ? { ...t, assigneeId: null } : t)));
+  }
+
+  // Replace the board with an imported backup (FR26). The signed-in user is kept in the team.
+  function handleImport(data) {
+    const importedMembers = data.members.some((m) => m.id === currentUser.id)
+      ? data.members
+      : [...data.members, currentUser];
+    setMembers(importedMembers);
+    setTasks(data.tasks);
+    if (Array.isArray(data.deliverables)) setDeliverables(data.deliverables);
   }
 
   function handleDelete(task) {
@@ -210,6 +230,7 @@ export default function App() {
               highlighted={highlightId === task.id}
               onOpen={() => setModal({ mode: 'edit', taskId: task.id })}
               onHandOff={handleHandOff}
+              onMove={handleMove}
             />
           )}
         />
@@ -229,7 +250,12 @@ export default function App() {
         }
       >
         {modal?.mode === 'settings' ? (
-          <SettingsPanel settings={settings} onChange={setSettings} />
+          <SettingsPanel
+            settings={settings}
+            onChange={setSettings}
+            board={{ tasks, members, deliverables }}
+            onImport={handleImport}
+          />
         ) : modal?.mode === 'team' ? (
           <TeamPanel
             members={members}

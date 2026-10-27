@@ -1,6 +1,7 @@
 import CopyContextButton from './CopyContextButton';
 import { AlertIcon, CheckIcon, ClockIcon } from './Icons';
 import TypeBadge from './TypeBadge';
+import { STAGES } from '../lib/constants';
 import { getDueState } from '../lib/due';
 import { formatShortDate, getInitials } from '../lib/utils';
 
@@ -22,7 +23,8 @@ const DUE_LABEL = {
 // A single task on the board: type, title, assignee and due date are all visible at a glance (FR7).
 // Clicking anywhere on the card (or pressing Enter on its title) opens it for editing (FR9).
 // The "Hand off to" dropdown reassigns the task without opening it (FR14).
-export default function TaskCard({ task, assignee, members, highlighted, onOpen, onHandOff }) {
+// The "Move to" dropdown changes column by keyboard or touch, the alternative to dragging (FR24, NFR9).
+export default function TaskCard({ task, assignee, members, highlighted, onOpen, onHandOff, onMove }) {
   const due = getDueState(task);
 
   return (
@@ -53,7 +55,7 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
 
       {/* relative z-10 lifts these controls above the card's clickable overlay */}
       <div className="relative z-10 mt-3 flex flex-col gap-2 border-t border-slate-200 pt-3 text-sm">
-        <div className="flex items-center gap-2">
+        <div className="grid grid-cols-[auto_1fr] items-center gap-x-2 gap-y-2">
           <label htmlFor={`handoff-${task.id}`} className="font-bold text-ink-muted">
             Hand off to<span className="sr-only"> (task: {task.title})</span>
           </label>
@@ -61,12 +63,28 @@ export default function TaskCard({ task, assignee, members, highlighted, onOpen,
             id={`handoff-${task.id}`}
             value={task.assigneeId ?? ''}
             onChange={(event) => onHandOff(task, event.target.value || null)}
-            className="min-h-[36px] min-w-0 flex-1 rounded-md border border-slate-400 bg-white px-2 text-sm"
+            className="min-h-[36px] min-w-0 rounded-md border border-slate-400 bg-white px-2 text-sm"
           >
             <option value="">Unassigned</option>
             {members.map((member) => (
               <option key={member.id} value={member.id}>
                 {member.name}
+              </option>
+            ))}
+          </select>
+
+          <label htmlFor={`move-${task.id}`} className="font-bold text-ink-muted">
+            Move to<span className="sr-only"> (task: {task.title})</span>
+          </label>
+          <select
+            id={`move-${task.id}`}
+            value={task.status}
+            onChange={(event) => onMove(task, event.target.value)}
+            className="min-h-[36px] min-w-0 rounded-md border border-slate-400 bg-white px-2 text-sm"
+          >
+            {STAGES.map((stage) => (
+              <option key={stage.id} value={stage.id}>
+                {stage.label}
               </option>
             ))}
           </select>
