@@ -92,6 +92,16 @@ export default function App() {
     setMembers((current) => [...current, { id: createId(), ...values, createdAt: nowISO() }]);
   }
 
+  function handleUpdateMember(id, values) {
+    setMembers((current) => current.map((m) => (m.id === id ? { ...m, ...values } : m)));
+  }
+
+  // Removing someone unassigns their tasks rather than deleting them (FR4).
+  function handleRemoveMember(member) {
+    setMembers((current) => current.filter((m) => m.id !== member.id));
+    setTasks((current) => current.map((t) => (t.assigneeId === member.id ? { ...t, assigneeId: null } : t)));
+  }
+
   function handleDelete(task) {
     setTasks((current) => current.filter((t) => t.id !== task.id));
     closeModal();
@@ -182,7 +192,13 @@ export default function App() {
         title={modal?.mode === 'team' ? 'Team members' : editingTask ? 'Edit task' : 'New task'}
       >
         {modal?.mode === 'team' ? (
-          <TeamPanel members={members} currentUserId={currentUser.id} onAdd={handleAddMember} />
+          <TeamPanel
+            members={members}
+            currentUserId={currentUser.id}
+            onAdd={handleAddMember}
+            onUpdate={handleUpdateMember}
+            onRemove={handleRemoveMember}
+          />
         ) : (
           /* key resets the form whenever a different task is opened */
           <TaskForm
