@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Board from './components/Board';
 import Header from './components/Header';
 import Modal from './components/Modal';
@@ -39,6 +39,22 @@ export default function App() {
     closeModal();
   }
 
+  // Reassign a task from the card dropdown, then confirm it visually and out loud (FR14).
+  const [highlightId, setHighlightId] = useState(null);
+  const highlightTimer = useRef(null);
+
+  function handleHandOff(task, memberId) {
+    setTasks((current) =>
+      current.map((t) => (t.id === task.id ? { ...t, assigneeId: memberId, updatedAt: nowISO() } : t)),
+    );
+    const member = members.find((m) => m.id === memberId);
+    showToast(member ? `"${task.title}" handed off to ${member.name}` : `"${task.title}" is now unassigned`);
+
+    setHighlightId(task.id);
+    clearTimeout(highlightTimer.current);
+    highlightTimer.current = setTimeout(() => setHighlightId(null), 2000);
+  }
+
   function handleDelete(task) {
     setTasks((current) => current.filter((t) => t.id !== task.id));
     closeModal();
@@ -67,7 +83,10 @@ export default function App() {
             <TaskCard
               task={task}
               assignee={members.find((m) => m.id === task.assigneeId)}
+              members={members}
+              highlighted={highlightId === task.id}
               onOpen={() => setModal({ mode: 'edit', taskId: task.id })}
+              onHandOff={handleHandOff}
             />
           )}
         />

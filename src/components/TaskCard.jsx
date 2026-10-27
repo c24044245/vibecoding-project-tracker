@@ -20,11 +20,16 @@ const DUE_LABEL = {
 
 // A single task on the board: type, title, assignee and due date are all visible at a glance (FR7).
 // Clicking anywhere on the card (or pressing Enter on its title) opens it for editing (FR9).
-export default function TaskCard({ task, assignee, onOpen }) {
+// The "Hand off to" dropdown reassigns the task without opening it (FR14).
+export default function TaskCard({ task, assignee, members, highlighted, onOpen, onHandOff }) {
   const due = getDueState(task);
 
   return (
-    <article className={`relative rounded-lg border p-3 shadow-sm hover:shadow-md ${CARD_TINT[due.state]}`}>
+    <article
+      className={`relative rounded-lg border p-3 shadow-sm transition-shadow hover:shadow-md ${CARD_TINT[due.state]} ${
+        highlighted ? 'ring-4 ring-brand/40' : ''
+      }`}
+    >
       <p className="mb-2">
         <TypeBadge type={task.type} />
       </p>
@@ -43,6 +48,26 @@ export default function TaskCard({ task, assignee, onOpen }) {
       <div className="flex items-center justify-between gap-2 text-sm">
         <Assignee person={assignee} />
         <DueLabel due={due} date={task.dueDate} />
+      </div>
+
+      {/* relative z-10 lifts the dropdown above the card's clickable overlay */}
+      <div className="relative z-10 mt-3 flex items-center gap-2 border-t border-slate-200 pt-3 text-sm">
+        <label htmlFor={`handoff-${task.id}`} className="font-bold text-ink-muted">
+          Hand off to<span className="sr-only"> (task: {task.title})</span>
+        </label>
+        <select
+          id={`handoff-${task.id}`}
+          value={task.assigneeId ?? ''}
+          onChange={(event) => onHandOff(task, event.target.value || null)}
+          className="min-h-[36px] min-w-0 flex-1 rounded-md border border-slate-400 bg-white px-2 text-sm"
+        >
+          <option value="">Unassigned</option>
+          {members.map((member) => (
+            <option key={member.id} value={member.id}>
+              {member.name}
+            </option>
+          ))}
+        </select>
       </div>
     </article>
   );
