@@ -11,7 +11,7 @@ export default function Header({ children }) {
       </a>
 
       <div className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <a href="/" className="flex items-center gap-3 rounded-md" aria-label="Vibe Tracker, go to board">
+        <a href={import.meta.env.BASE_URL} className="flex items-center gap-3 rounded-md" aria-label="Vibe Tracker, go to board">
           <Logo />
           <span className="text-xl font-bold tracking-tight">Vibe Tracker</span>
         </a>
