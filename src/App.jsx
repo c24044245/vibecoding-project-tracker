@@ -8,6 +8,7 @@ import SettingsPanel from './components/SettingsPanel';
 import SignIn from './components/SignIn';
 import TaskCard from './components/TaskCard';
 import TeamPanel from './components/TeamPanel';
+import TeamStrip from './components/TeamStrip';
 import TaskForm from './components/TaskForm';
 import Toast from './components/Toast';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -227,6 +228,13 @@ export default function App() {
         <p className="mb-3 text-sm text-ink-muted">
           Drag cards between columns, or use <strong>Move to</strong> on any card.
         </p>
+
+        <TeamStrip
+          members={members}
+          tasks={tasks}
+          selectedId={filters.assignee}
+          onSelect={(assignee) => setFilters((f) => ({ ...f, assignee }))}
+        />
 
         <FilterBar
           filters={filters}
