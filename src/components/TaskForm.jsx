@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import CopyContextButton from './CopyContextButton';
 import TypeBadge from './TypeBadge';
 import { AI_TOOLS, CONTEXT_TEMPLATE, STAGES, TASK_TYPES } from '../lib/constants';
+import { renderMarkdown } from '../lib/markdown';
 import { nowISO, timeAgo } from '../lib/utils';
 
 const inputClass =
@@ -21,6 +22,7 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
     contextTool: task?.context?.tool ?? '',
   });
   const [error, setError] = useState('');
+  const [showPreview, setShowPreview] = useState(false); // live Markdown preview of the Context notes (FR25)
   const titleRef = useRef(null);
 
   // Deleting asks for confirmation first (FR10, NFR17).
@@ -168,9 +170,20 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
           pick up. Markdown works here.
         </p>
 
-        <label htmlFor="task-context" className={labelClass}>
-          Context notes
-        </label>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <label htmlFor="task-context" className={labelClass}>
+            Context notes
+          </label>
+          <button
+            type="button"
+            aria-expanded={showPreview}
+            aria-controls="context-preview"
+            onClick={() => setShowPreview((v) => !v)}
+            className="min-h-[36px] rounded-md px-3 text-sm font-bold text-brand-ink underline-offset-2 hover:bg-brand-soft hover:underline"
+          >
+            {showPreview ? 'Hide preview' : 'Show preview'}
+          </button>
+        </div>
         <textarea
           id="task-context"
           rows={8}
@@ -180,6 +193,17 @@ export default function TaskForm({ task, members, onSave, onCancel, onDelete }) 
           aria-describedby="context-help context-updated"
           className={`${inputClass} font-mono text-sm`}
         />
+
+        {/* Updates as you type. Not a live region, so screen readers are not interrupted on every key press. */}
+        <div
+          id="context-preview"
+          role="region"
+          aria-label="Context preview"
+          hidden={!showPreview}
+          className="mt-3 flex flex-col gap-2 rounded-md border border-line-soft bg-surface-muted p-3 text-sm"
+        >
+          {showPreview && (values.contextBody.trim() ? renderMarkdown(values.contextBody) : <p className="text-ink-muted">Nothing to preview yet.</p>)}
+        </div>
 
         <div className="mt-3 flex flex-wrap items-end justify-between gap-3">
           <div>
