@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Board from './components/Board';
 import Deliverables from './components/Deliverables';
+import DueKey from './components/DueKey';
 import FilterBar, { NO_FILTERS, applyFilters } from './components/FilterBar';
 import Header from './components/Header';
 import Modal from './components/Modal';
@@ -249,6 +250,8 @@ export default function App() {
           shown={visibleTasks.length}
           total={tasks.length}
         />
+
+        <DueKey />
 
         <Board
           tasks={visibleTasks}

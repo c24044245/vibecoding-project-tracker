@@ -7,14 +7,14 @@ import { getDueState } from '../lib/due';
 import { formatShortDate, getInitials } from '../lib/utils';
 
 // Card tint and due-label style for each due state (FR16).
-const CARD_TINT = {
+export const CARD_TINT = {
   overdue: 'bg-due-overdue-soft border-due-overdue border-2',
   warning: 'bg-due-warning-soft border-due-warning-line border-2',
   done: 'bg-surface-muted border-line',
   calm: 'bg-surface-card border-line',
   none: 'bg-surface-card border-line',
 };
-const DUE_LABEL = {
+export const DUE_LABEL = {
   overdue: { Icon: AlertIcon, className: 'text-due-overdue font-bold' },
   warning: { Icon: ClockIcon, className: 'text-due-warning font-bold' },
   calm: { Icon: ClockIcon, className: 'text-due-calm' },
