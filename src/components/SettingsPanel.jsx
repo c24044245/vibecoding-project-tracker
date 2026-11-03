@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { buildBackup, downloadFile, parseBackup } from '../lib/backup';
-import { TEXT_SIZES, THEMES } from '../lib/constants';
+import { ACCENTS, TEXT_SIZES, THEMES } from '../lib/constants';
 
 /**
- * Display settings (FR22). Text size scales the whole app, because every size in the
+ * Display settings (FR22, FR23). Text size scales the whole app, because every size in the
  * app is set in rem units that follow the page's root font size (NFR8).
  * Backup exports and imports the board as a file (FR26).
  */
@@ -54,6 +54,30 @@ export default function SettingsPanel({ settings, onChange, board, onImport }) {
                 className="h-4 w-4 accent-brand"
               />
               {theme.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend className="mb-1 font-bold">Accent colour</legend>
+        <p className="mb-3 text-sm text-ink-muted">Changes the header and button colour. Every option keeps text easy to read.</p>
+        <div className="grid grid-cols-2 gap-2">
+          {ACCENTS.map((accent) => (
+            <label
+              key={accent.value}
+              className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-lg border-2 border-line px-3 has-[:checked]:border-brand-ink has-[:checked]:bg-brand-soft"
+            >
+              <input
+                type="radio"
+                name="accent"
+                value={accent.value}
+                checked={(settings.accent ?? 'indigo') === accent.value}
+                onChange={() => onChange({ ...settings, accent: accent.value })}
+                className="h-4 w-4 accent-brand"
+              />
+              <span aria-hidden="true" className="h-5 w-5 flex-none rounded-full" style={{ backgroundColor: accent.swatch }} />
+              {accent.label}
             </label>
           ))}
         </div>

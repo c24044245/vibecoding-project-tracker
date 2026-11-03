@@ -28,8 +28,8 @@ function Logo() {
     <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" focusable="false">
       <rect width="36" height="36" rx="9" fill="#FFFFFF" />
       {/* Three bars of a Kanban board, the last one ticked. */}
-      <rect x="7" y="9" width="5" height="18" rx="2" fill="#3730A3" />
-      <rect x="15.5" y="9" width="5" height="12" rx="2" fill="#3730A3" />
+      <rect x="7" y="9" width="5" height="18" rx="2" style={{ fill: 'var(--brand)' }} />
+      <rect x="15.5" y="9" width="5" height="12" rx="2" style={{ fill: 'var(--brand)' }} />
       <path d="M23 18.5l3 3 5-6.5" fill="none" stroke="#047857" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );

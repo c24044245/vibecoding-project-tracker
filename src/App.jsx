@@ -44,6 +44,11 @@ export default function App() {
     return () => media.removeEventListener('change', apply);
   }, [settings.theme]);
 
+  // Accent colour (FR23): a data attribute on <html> switches the brand colour variables.
+  useEffect(() => {
+    document.documentElement.dataset.accent = settings.accent ?? 'indigo';
+  }, [settings.accent]);
+
   // Who is signed in (FR1). Only the user's id is stored; their details live in `members`.
   const [session, setSession] = useLocalStorage(STORAGE_KEYS.session, { currentUserId: null });
   const currentUser = members.find((m) => m.id === session.currentUserId) ?? null;

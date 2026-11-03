@@ -52,8 +52,17 @@ export const THEMES = [
   { value: 'dark', label: 'Dark' },
 ];
 
+// Accent colour presets (FR23). Only presets that pass WCAG AA contrast in both themes are offered.
+// `swatch` is the colour shown in Settings.
+export const ACCENTS = [
+  { value: 'indigo', label: 'Indigo (default)', swatch: '#3730a3' },
+  { value: 'blue', label: 'Blue', swatch: '#1d4ed8' },
+  { value: 'purple', label: 'Purple', swatch: '#7e22ce' },
+  { value: 'graphite', label: 'Graphite', swatch: '#334155' },
+];
+
 // Default display settings (DR6).
-export const DEFAULT_SETTINGS = { textSize: 100, theme: 'system' };
+export const DEFAULT_SETTINGS = { textSize: 100, theme: 'system', accent: 'indigo' };
 
 // localStorage keys (FR12).
 export const STORAGE_KEYS = {

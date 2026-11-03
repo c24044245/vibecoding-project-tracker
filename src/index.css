@@ -8,7 +8,7 @@
   --brand-hover: #312e81;    /* indigo-900 */
   --brand-soft: #eef2ff;     /* indigo-50 */
   --brand-ink: #3730a3;
-  --brand-ring: #a5b4fc;     /* indigo-300 */
+  --brand-ring: #6366f1;     /* indigo-500: 3:1 or more against the page and columns */
 
   --surface-page: #f1f5f9;   /* slate-100 */
   --surface-column: #e2e8f0; /* slate-200 */
@@ -102,6 +102,34 @@ body {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Accent colour presets (FR23). Each sets the brand colours for light and dark mode.
+   All pass the same contrast checks as the default: white text on the brand colour and
+   brand-coloured text on cards, page and soft backgrounds are 4.5:1 or more; rings are 3:1 or more. */
+:root[data-accent="blue"]:not(.dark) {
+  --brand: #1d4ed8; --brand-hover: #1e40af; --brand-soft: #eff6ff;
+  --brand-ink: #1d4ed8; --brand-ring: #2563eb; --focus: #1d4ed8;
+}
+:root.dark[data-accent="blue"] {
+  --brand: #2563eb; --brand-hover: #1d4ed8; --brand-soft: #172554;
+  --brand-ink: #93c5fd; --brand-ring: #3b82f6; --focus: #93c5fd;
+}
+:root[data-accent="purple"]:not(.dark) {
+  --brand: #7e22ce; --brand-hover: #6b21a8; --brand-soft: #faf5ff;
+  --brand-ink: #7e22ce; --brand-ring: #a855f7; --focus: #7e22ce;
+}
+:root.dark[data-accent="purple"] {
+  --brand: #9333ea; --brand-hover: #7e22ce; --brand-soft: #3b0764;
+  --brand-ink: #d8b4fe; --brand-ring: #a855f7; --focus: #d8b4fe;
+}
+:root[data-accent="graphite"]:not(.dark) {
+  --brand: #334155; --brand-hover: #1e293b; --brand-soft: #f1f5f9;
+  --brand-ink: #334155; --brand-ring: #64748b; --focus: #334155;
+}
+:root.dark[data-accent="graphite"] {
+  --brand: #475569; --brand-hover: #334155; --brand-soft: #273449;
+  --brand-ink: #cbd5e1; --brand-ring: #64748b; --focus: #cbd5e1;
 }
 
 /* Respect the user's reduced-motion setting. */
