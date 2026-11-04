@@ -8,7 +8,7 @@ export default function Header({ children }) {
         href="#board"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface-card focus:px-4 focus:py-2 focus:font-bold focus:text-brand-ink"
       >
-        Skip to board
+        Skip to main content
       </a>
 
       <div className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-between gap-4 px-4 py-3 sm:px-6">
